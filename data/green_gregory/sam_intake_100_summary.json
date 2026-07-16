@@ -1,0 +1,32 @@
+{
+  "sample_method": "All 100 qualifying 2023-2024 solicitation/combined notices with embedded award outcome fields in the official SAM full CSV extract; deterministic sort by posted date then notice ID.",
+  "sample_size": 100,
+  "gate_counts": {
+    "Gate 7 \u2014 requirement completeness": 7,
+    "Gate 4 \u2014 GGG eligibility": 16,
+    "Gate 6 \u2014 product/service exclusion": 75,
+    "Passes preliminary metadata gates \u2014 archive review required": 2
+  },
+  "supply_tracks": {
+    "Mixed control": 25,
+    "MRO tools and commercial hardware": 68,
+    "Office and facility consumables": 1,
+    "Basic IT accessories and standard equipment": 6
+  },
+  "top_agencies": [
+    [
+      "DEPT OF DEFENSE",
+      88
+    ],
+    [
+      "VETERANS AFFAIRS, DEPARTMENT OF",
+      12
+    ]
+  ],
+  "review_count": 2,
+  "reject_count": 98,
+  "baseball_calls": {
+    "Strikeout": 98,
+    "Double": 2
+  }
+}
