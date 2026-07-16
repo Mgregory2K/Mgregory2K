@@ -1,6 +1,6 @@
 {
   "source_url": "https://s3.amazonaws.com/falextracts/Contract%20Opportunities/datagov/ContractOpportunitiesFullCSV.csv",
-  "retrieved_utc": "2026-07-16T16:31:10.273173Z",
+  "retrieved_utc": "2026-07-16T16:35:33.591640Z",
   "raw_columns": [
     "NoticeId",
     "Title",
@@ -53,11 +53,14 @@
   "resolved_columns": {
     "notice_id": "NoticeId",
     "title": "Title",
-    "solicitation_number": null,
-    "agency": null,
+    "solicitation_number": "Sol#",
+    "agency": "Department/Ind.Agency",
+    "subagency": "Sub-Tier",
+    "contracting_office": "Office",
     "posted_date": "PostedDate",
     "notice_type": "Type",
     "base_type": "BaseType",
+    "archive_date": "ArchiveDate",
     "set_aside": "SetASide",
     "set_aside_code": "SetASideCode",
     "response_deadline": "ResponseDeadLine",
@@ -66,21 +69,38 @@
     "active": "Active",
     "description": "Description",
     "additional_info": "AdditionalInfoLink",
+    "record_link": "Link",
     "award_number": "AwardNumber",
-    "award_amount": null,
+    "award_amount": "Award$",
     "awardee": "Awardee",
     "award_date": "AwardDate",
     "city": "PopCity",
     "state": "PopState",
-    "zip": "PopZip"
+    "zip": "PopZip",
+    "country": "PopCountry"
   },
   "counts": {
     "total_rows": 78811,
     "posted_2023_2024": 5739,
-    "solicitation_type": 1505,
+    "actual_solicitation_type": 1505,
+    "deadline_after_boundary": 481,
     "deadline_closed_by_2024_12_31": 1024,
-    "inactive_or_historical": 0,
-    "selected": 0
+    "selected": 1024,
+    "award_fields_present": 100
   },
-  "candidate_file": "data/green_gregory/sam_historical_open_2023_2024.csv"
+  "active_values_among_selected": {
+    "Yes": 1024
+  },
+  "notice_types_within_date_window": {
+    "Solicitation": 1098,
+    "Special Notice": 536,
+    "Award Notice": 3175,
+    "Combined Synopsis/Solicitation": 407,
+    "Sources Sought": 184,
+    "Presolicitation": 330,
+    "Justification": 8,
+    "Sale of Surplus Property": 1
+  },
+  "candidate_file": "data/green_gregory/sam_historical_open_2023_2024.csv",
+  "method_note": "Active is retained as evidence but not used as the controlling historical gate because the extract marks closed 2023-2024 records inconsistently. Response deadline, archive date, notice version, and direct record verification control."
 }
