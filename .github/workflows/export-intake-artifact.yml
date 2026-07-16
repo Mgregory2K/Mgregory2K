@@ -1,0 +1,18 @@
+name: Export GGG Intake Artifact
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/export-intake-artifact.yml'
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ggg-historical-open-intake-test01
+          path: data/green_gregory/GGG_Historical_Open_Solicitation_Intake_Test01.xlsx
+          if-no-files-found: error
+          retention-days: 1
