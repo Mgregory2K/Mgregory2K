@@ -1,0 +1,137 @@
+name: SAM Historical Open Solicitation Intake
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sam-historical-intake.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-intake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and filter official SAM extract
+        shell: bash
+        run: |
+          python - <<'PY'
+          import csv, json, os, re, urllib.request
+          from datetime import datetime, date
+          from pathlib import Path
+
+          URL = 'https://s3.amazonaws.com/falextracts/Contract%20Opportunities/datagov/ContractOpportunitiesFullCSV.csv'
+          out_dir = Path('data/green_gregory')
+          out_dir.mkdir(parents=True, exist_ok=True)
+          raw = out_dir / 'ContractOpportunitiesFullCSV.csv'
+          urllib.request.urlretrieve(URL, raw)
+
+          def norm(s):
+              return re.sub(r'[^a-z0-9]', '', (s or '').lower())
+
+          def parse_date(v):
+              v = (v or '').strip()
+              if not v:
+                  return None
+              v = v.replace('Z','')
+              candidates = [v, v[:10], v.split('T')[0], v.split(' ')[0]]
+              fmts = ['%Y-%m-%d','%m/%d/%Y','%m/%d/%y','%Y/%m/%d','%Y-%m-%d %H:%M:%S']
+              for c in candidates:
+                  for f in fmts:
+                      try:
+                          return datetime.strptime(c, f).date()
+                      except Exception:
+                          pass
+              return None
+
+          with raw.open('r', encoding='utf-8-sig', errors='replace', newline='') as f:
+              reader = csv.DictReader(f)
+              fields = reader.fieldnames or []
+              keymap = {norm(x): x for x in fields}
+              aliases = {
+                  'notice_id':['noticeid','noticeidid'],
+                  'title':['title'],
+                  'solicitation_number':['solicitationnumber','solicitationno','solicitation'],
+                  'agency':['fullparentpathname','departmentagency','agency','department'],
+                  'posted_date':['posteddate'],
+                  'notice_type':['type','noticetype'],
+                  'base_type':['basetype'],
+                  'set_aside':['typeofsetasidedescription','setaside'],
+                  'set_aside_code':['typeofsetaside','setasidecode'],
+                  'response_deadline':['responsedeadline','responseduedate'],
+                  'naics':['naicscode','naics'],
+                  'psc':['classificationcode','psc'],
+                  'active':['active'],
+                  'description':['description'],
+                  'additional_info':['additionalinfolink'],
+                  'award_number':['awardnumber'],
+                  'award_amount':['awardamount'],
+                  'awardee':['awardee'],
+                  'award_date':['awarddate'],
+                  'city':['popcity'],
+                  'state':['popstate'],
+                  'zip':['popzip'],
+              }
+              resolved = {}
+              for dst, opts in aliases.items():
+                  resolved[dst] = next((keymap[o] for o in opts if o in keymap), None)
+
+              rows = []
+              counts = {'total_rows':0,'posted_2023_2024':0,'solicitation_type':0,'deadline_closed_by_2024_12_31':0,'inactive_or_historical':0,'selected':0}
+              allowed_exact = {'solicitation','combinedsynopsissolicitation'}
+              for row in reader:
+                  counts['total_rows'] += 1
+                  def get(k):
+                      col = resolved.get(k)
+                      return (row.get(col,'') if col else '')
+                  pd = parse_date(get('posted_date'))
+                  if not pd or not (date(2023,1,1) <= pd <= date(2024,12,31)):
+                      continue
+                  counts['posted_2023_2024'] += 1
+                  t = norm(get('notice_type'))
+                  if t not in allowed_exact:
+                      continue
+                  counts['solicitation_type'] += 1
+                  rd = parse_date(get('response_deadline'))
+                  if rd and rd > date(2024,12,31):
+                      continue
+                  counts['deadline_closed_by_2024_12_31'] += 1
+                  active = norm(get('active'))
+                  if active not in {'','no','false','inactive','archived'}:
+                      continue
+                  counts['inactive_or_historical'] += 1
+                  canonical = {k:get(k) for k in aliases}
+                  canonical['historical_source_url'] = ('https://sam.gov/opp/' + canonical['notice_id'] + '/view') if canonical['notice_id'] else ''
+                  canonical['posted_date_parsed'] = pd.isoformat()
+                  canonical['response_deadline_parsed'] = rd.isoformat() if rd else ''
+                  rows.append(canonical)
+              counts['selected'] = len(rows)
+
+          candidates = out_dir / 'sam_historical_open_2023_2024.csv'
+          columns = list(aliases) + ['historical_source_url','posted_date_parsed','response_deadline_parsed']
+          with candidates.open('w', encoding='utf-8', newline='') as f:
+              w = csv.DictWriter(f, fieldnames=columns)
+              w.writeheader(); w.writerows(rows)
+
+          profile = {
+              'source_url':URL,
+              'retrieved_utc':datetime.utcnow().isoformat()+'Z',
+              'raw_columns':fields,
+              'resolved_columns':resolved,
+              'counts':counts,
+              'candidate_file':str(candidates),
+          }
+          (out_dir/'sam_extract_profile.json').write_text(json.dumps(profile, indent=2), encoding='utf-8')
+          print(json.dumps(profile, indent=2))
+          PY
+      - name: Remove raw extract before commit
+        run: rm -f data/green_gregory/ContractOpportunitiesFullCSV.csv
+      - name: Commit filtered historical data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/green_gregory
+          git commit -m 'Add official SAM 2023-2024 historical solicitation extract' || exit 0
+          git push
