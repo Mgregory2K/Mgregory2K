@@ -146,6 +146,8 @@ jobs:
           (out_dir/'sam_extract_profile.json').write_text(json.dumps(profile, indent=2), encoding='utf-8')
           print(json.dumps(profile, indent=2))
           PY
+      - name: Build deterministic 100-record intake sample
+        run: python scripts/build_sam_intake_100.py
       - name: Remove raw extract before commit
         run: rm -f data/green_gregory/ContractOpportunitiesFullCSV.csv
       - name: Commit filtered historical data
@@ -153,5 +155,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/green_gregory
-          git commit -m 'Refresh official SAM 2023-2024 historical solicitation extract' || exit 0
+          git commit -m 'Build GGG historical open solicitation intake 100' || exit 0
           git push
