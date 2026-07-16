@@ -1,0 +1,23 @@
+name: Fast Historical Archive Enrichment
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/fast-enrichment.yml'
+permissions:
+  contents: read
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip install requests
+      - run: python scripts/enrich_sam_archive_fast.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ggg-fast-archive-enrichment
+          path: |
+            data/green_gregory/archive_enrichment_fast
+            data/green_gregory/sam_archive_enriched_survivors.csv
+            data/green_gregory/sam_archive_enriched_survivors_summary.json
+          retention-days: 1
