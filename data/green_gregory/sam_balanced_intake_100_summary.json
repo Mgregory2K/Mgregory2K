@@ -1,0 +1,80 @@
+{
+  "sample_method": "Distinct solicitation families selected from the 1,024 closed 2023-2024 Solicitation/Combined notices. Selection is stratified by preferred supply lanes and independent of award availability. Notice versions are collapsed; historical award notices are mapped afterward as answer keys.",
+  "solicitation_universe_rows": 1024,
+  "distinct_solicitation_families": 246,
+  "selected": 100,
+  "target_quotas": {
+    "Office and facility consumables": 40,
+    "MRO tools and commercial hardware": 30,
+    "Packaging, shipping, storage and containers": 15,
+    "Basic IT accessories and standard equipment": 10,
+    "Mixed controls": 5
+  },
+  "quota_shortage_before_fill": {
+    "Office and facility consumables": 19,
+    "MRO tools and commercial hardware": 26,
+    "Packaging, shipping, storage and containers": 13,
+    "Basic IT accessories and standard equipment": 1
+  },
+  "gate_counts": {
+    "Passes Gates 1-6 preliminarily; Gate 7 archive review pending": 42,
+    "Gate 4 \u2014 GGG eligibility": 6,
+    "Gate 6 \u2014 product/service exclusion": 43,
+    "Gate 5 \u2014 mandatory source": 9
+  },
+  "supply_tracks": {
+    "Office and facility consumables": 47,
+    "MRO tools and commercial hardware": 24,
+    "Packaging, shipping, storage and containers": 4,
+    "Basic IT accessories and standard equipment": 9,
+    "Mixed controls": 16
+  },
+  "top_agencies": [
+    [
+      "DEPT OF DEFENSE",
+      50
+    ],
+    [
+      "AGRICULTURE, DEPARTMENT OF",
+      29
+    ],
+    [
+      "GENERAL SERVICES ADMINISTRATION",
+      10
+    ],
+    [
+      "VETERANS AFFAIRS, DEPARTMENT OF",
+      5
+    ],
+    [
+      "INTERIOR, DEPARTMENT OF THE",
+      2
+    ],
+    [
+      "STATE, DEPARTMENT OF",
+      2
+    ],
+    [
+      "ENVIRONMENTAL PROTECTION AGENCY",
+      1
+    ],
+    [
+      "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION",
+      1
+    ]
+  ],
+  "baseball_calls": {
+    "Home Run": 19,
+    "Triple": 12,
+    "Double": 10,
+    "Single": 1,
+    "Strikeout": 58
+  },
+  "mapped_outcomes": 19,
+  "archive_review_count": 42,
+  "control_or_reject_count": 58,
+  "sampling_pass_1_failure": {
+    "method": "Conditioned on embedded award fields",
+    "result": "98/100 rejected; 88/100 DoD; amendment duplication; rejected as intake sample due to outcome-recovery and agency bias"
+  }
+}

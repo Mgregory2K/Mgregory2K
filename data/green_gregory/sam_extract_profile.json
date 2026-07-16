@@ -1,6 +1,6 @@
 {
   "source_url": "https://s3.amazonaws.com/falextracts/Contract%20Opportunities/datagov/ContractOpportunitiesFullCSV.csv",
-  "retrieved_utc": "2026-07-16T16:40:52.814558Z",
+  "retrieved_utc": "2026-07-16T16:45:42.301779Z",
   "raw_columns": [
     "NoticeId",
     "Title",
@@ -60,6 +60,7 @@
     "posted_date": "PostedDate",
     "notice_type": "Type",
     "base_type": "BaseType",
+    "archive_type": "ArchiveType",
     "archive_date": "ArchiveDate",
     "set_aside": "SetASide",
     "set_aside_code": "SetASideCode",
@@ -81,26 +82,26 @@
   },
   "counts": {
     "total_rows": 78811,
+    "award_index_rows": 5614,
     "posted_2023_2024": 5739,
     "actual_solicitation_type": 1505,
     "deadline_after_boundary": 481,
     "deadline_closed_by_2024_12_31": 1024,
-    "selected": 1024,
-    "award_fields_present": 100
+    "solicitation_universe_rows": 1024
   },
   "active_values_among_selected": {
     "Yes": 1024
   },
-  "notice_types_within_date_window": {
-    "Solicitation": 1098,
-    "Special Notice": 536,
-    "Award Notice": 3175,
-    "Combined Synopsis/Solicitation": 407,
-    "Sources Sought": 184,
-    "Presolicitation": 330,
-    "Justification": 8,
+  "notice_types_2023_2025": {
+    "Solicitation": 5524,
+    "Combined Synopsis/Solicitation": 2882,
+    "Award Notice": 5030,
+    "Special Notice": 1437,
+    "Presolicitation": 1262,
+    "Sources Sought": 1047,
+    "Justification": 72,
+    "Consolidate/(Substantially) Bundle": 3,
     "Sale of Surplus Property": 1
   },
-  "candidate_file": "data/green_gregory/sam_historical_open_2023_2024.csv",
-  "method_note": "Active is retained as evidence but not used as the controlling historical gate because the extract marks closed 2023-2024 records inconsistently. Response deadline, archive date, notice version, and direct record verification control."
+  "method_note": "Active is retained but not controlling. Historical gate uses response deadline plus direct archive/version verification. Solicitation sampling is independent of outcome availability."
 }
