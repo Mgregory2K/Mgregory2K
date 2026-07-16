@@ -14,146 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download and filter official SAM extract
-        shell: bash
-        run: |
-          python - <<'PY'
-          import csv, json, re, urllib.request
-          from collections import Counter
-          from datetime import datetime, date
-          from pathlib import Path
-
-          URL = 'https://s3.amazonaws.com/falextracts/Contract%20Opportunities/datagov/ContractOpportunitiesFullCSV.csv'
-          out_dir = Path('data/green_gregory')
-          out_dir.mkdir(parents=True, exist_ok=True)
-          raw = out_dir / 'ContractOpportunitiesFullCSV.csv'
-          urllib.request.urlretrieve(URL, raw)
-
-          def norm(s):
-              return re.sub(r'[^a-z0-9]', '', (s or '').lower())
-
-          def parse_date(v):
-              v = (v or '').strip().replace('Z','')
-              if not v:
-                  return None
-              candidates = [v, v[:10], v.split('T')[0], v.split(' ')[0]]
-              fmts = ['%Y-%m-%d','%m/%d/%Y','%m/%d/%y','%Y/%m/%d','%Y-%m-%d %H:%M:%S']
-              for c in candidates:
-                  for f in fmts:
-                      try:
-                          return datetime.strptime(c, f).date()
-                      except Exception:
-                          pass
-              return None
-
-          with raw.open('r', encoding='utf-8-sig', errors='replace', newline='') as f:
-              reader = csv.DictReader(f)
-              fields = reader.fieldnames or []
-              keymap = {norm(x): x for x in fields}
-              aliases = {
-                  'notice_id':['noticeid'],
-                  'title':['title'],
-                  'solicitation_number':['sol','solicitationnumber','solicitationno','solicitation'],
-                  'agency':['departmentindagency','fullparentpathname','departmentagency','agency','department'],
-                  'subagency':['subtier'],
-                  'contracting_office':['office'],
-                  'posted_date':['posteddate'],
-                  'notice_type':['type','noticetype'],
-                  'base_type':['basetype'],
-                  'archive_date':['archivedate'],
-                  'set_aside':['setaside','typeofsetasidedescription'],
-                  'set_aside_code':['setasidecode','typeofsetaside'],
-                  'response_deadline':['responsedeadline','responseduedate'],
-                  'naics':['naicscode','naics'],
-                  'psc':['classificationcode','psc'],
-                  'active':['active'],
-                  'description':['description'],
-                  'additional_info':['additionalinfolink'],
-                  'record_link':['link'],
-                  'award_number':['awardnumber'],
-                  'award_amount':['award','awardamount'],
-                  'awardee':['awardee'],
-                  'award_date':['awarddate'],
-                  'city':['popcity'],
-                  'state':['popstate'],
-                  'zip':['popzip'],
-                  'country':['popcountry'],
-              }
-              resolved = {dst: next((keymap[o] for o in opts if o in keymap), None) for dst, opts in aliases.items()}
-
-              rows = []
-              counts = Counter()
-              active_values = Counter()
-              type_values = Counter()
-              allowed_exact = {'solicitation','combinedsynopsissolicitation'}
-              for source_row, row in enumerate(reader, start=2):
-                  counts['total_rows'] += 1
-                  def get(k):
-                      col = resolved.get(k)
-                      return (row.get(col,'') if col else '')
-                  pd = parse_date(get('posted_date'))
-                  if not pd or not (date(2023,1,1) <= pd <= date(2024,12,31)):
-                      continue
-                  counts['posted_2023_2024'] += 1
-                  t_raw = get('notice_type').strip()
-                  t = norm(t_raw)
-                  type_values[t_raw or '(blank)'] += 1
-                  if t not in allowed_exact:
-                      continue
-                  counts['actual_solicitation_type'] += 1
-                  rd = parse_date(get('response_deadline'))
-                  if not rd:
-                      counts['missing_response_deadline'] += 1
-                      continue
-                  if rd > date(2024,12,31):
-                      counts['deadline_after_boundary'] += 1
-                      continue
-                  counts['deadline_closed_by_2024_12_31'] += 1
-                  ad = parse_date(get('archive_date'))
-                  active_values[get('active').strip() or '(blank)'] += 1
-
-                  canonical = {k:get(k).strip() for k in aliases}
-                  canonical['source_extract_row'] = source_row
-                  canonical['historical_source_url'] = canonical['record_link'] or (('https://sam.gov/opp/' + canonical['notice_id'] + '/view') if canonical['notice_id'] else '')
-                  canonical['posted_date_parsed'] = pd.isoformat()
-                  canonical['response_deadline_parsed'] = rd.isoformat()
-                  canonical['archive_date_parsed'] = ad.isoformat() if ad else ''
-                  canonical['historical_status_basis'] = 'Response deadline passed no later than 2024-12-31; record-level archive/current-bid verification still required'
-                  rows.append(canonical)
-                  counts['selected'] += 1
-                  if canonical['additional_info']:
-                      counts['additional_info_link_present'] += 1
-                  if canonical['award_number'] or canonical['awardee'] or canonical['award_amount']:
-                      counts['award_fields_present'] += 1
-
-          candidates = out_dir / 'sam_historical_open_2023_2024.csv'
-          columns = list(aliases) + ['source_extract_row','historical_source_url','posted_date_parsed','response_deadline_parsed','archive_date_parsed','historical_status_basis']
-          with candidates.open('w', encoding='utf-8', newline='') as f:
-              w = csv.DictWriter(f, fieldnames=columns)
-              w.writeheader(); w.writerows(rows)
-
-          profile = {
-              'source_url':URL,
-              'retrieved_utc':datetime.utcnow().isoformat()+'Z',
-              'raw_columns':fields,
-              'resolved_columns':resolved,
-              'counts':dict(counts),
-              'active_values_among_selected':dict(active_values),
-              'notice_types_within_date_window':dict(type_values),
-              'candidate_file':str(candidates),
-              'method_note':'Active is retained as evidence but not used as the controlling historical gate because the extract marks closed 2023-2024 records inconsistently. Response deadline, archive date, notice version, and direct record verification control.'
-          }
-          (out_dir/'sam_extract_profile.json').write_text(json.dumps(profile, indent=2), encoding='utf-8')
-          print(json.dumps(profile, indent=2))
-          PY
-      - name: Build deterministic 100-record intake sample
+      - name: Extract official historical solicitation and award indexes
+        run: python scripts/extract_sam_historical.py
+      - name: Preserve failed outcome-conditioned sampling pass
         run: python scripts/build_sam_intake_100.py
+      - name: Build corrected lane-balanced 100-record intake
+        run: python scripts/build_balanced_sam_intake_100.py
       - name: Remove raw extract before commit
         run: rm -f data/green_gregory/ContractOpportunitiesFullCSV.csv
-      - name: Commit filtered historical data
+      - name: Commit historical intake outputs
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/green_gregory
-          git commit -m 'Build GGG historical open solicitation intake 100' || exit 0
+          git commit -m 'Build corrected GGG historical open solicitation intake 100' || exit 0
           git push
