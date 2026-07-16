@@ -3,12 +3,12 @@ Official SAM full extract rows	78811	Source population at retrieval
 Posted during 2023-2024	5739	Primary historical period
 Actual Solicitation or Combined notice	1505	Notice-type gate
 Response deadline no later than 2024-12-31	1024	Closed historical solicitation universe
-Distinct solicitation families	246	Amendments and notice versions collapsed
+Distinct solicitation families	304	Amendments and notice versions collapsed
 Balanced intake selected	100	Selection independent of award outcome
-Pass Gates 1-6 preliminarily	42	Advance to archive/attachment review
-Killed at Gate 4 — GGG eligibility	6	Set-aside or eligibility mismatch
-Killed at Gate 5 — mandatory source	9	Mandatory-channel signal
-Killed at Gate 6 — product/service exclusion	43	Current kickoff exclusions
-Award outcomes mapped at intake	19	Answer keys recovered without driving selection
+Pass Gates 1-6 preliminarily	36	Advance to archive/attachment review
+Killed at Gate 4 — GGG eligibility	5	Set-aside or eligibility mismatch
+Killed at Gate 5 — mandatory source	11	Mandatory-channel signal
+Killed at Gate 6 — product/service exclusion	48	Current kickoff exclusions
+Award outcomes mapped at intake	22	Answer keys recovered without driving selection
 Sampling Pass 1 review count	2	Rejected outcome-conditioned sample
 Sampling Pass 1 rejection count	98	88/100 DoD; amendment and outcome bias

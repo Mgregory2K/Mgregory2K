@@ -1,0 +1,42 @@
+{
+  "source_url": "https://s3.amazonaws.com/falextracts/Contract%20Opportunities/datagov/ContractOpportunitiesFullCSV.csv",
+  "retrieved_utc": "2026-07-16T17:02:26.285609Z",
+  "counts": {
+    "total_rows": 78811,
+    "award_index_rows": 7070,
+    "solicitation_rows": 1301,
+    "primary_2023_2024": 1024,
+    "fallback_2022": 277
+  },
+  "resolved_columns": {
+    "notice_id": "NoticeId",
+    "title": "Title",
+    "solicitation_number": "Sol#",
+    "agency": "Department/Ind.Agency",
+    "subagency": "Sub-Tier",
+    "contracting_office": "Office",
+    "posted_date": "PostedDate",
+    "notice_type": "Type",
+    "base_type": "BaseType",
+    "archive_type": "ArchiveType",
+    "archive_date": "ArchiveDate",
+    "set_aside": "SetASide",
+    "set_aside_code": "SetASideCode",
+    "response_deadline": "ResponseDeadLine",
+    "naics": "NaicsCode",
+    "psc": "ClassificationCode",
+    "active": "Active",
+    "description": "Description",
+    "additional_info": "AdditionalInfoLink",
+    "record_link": "Link",
+    "award_number": "AwardNumber",
+    "award_amount": "Award$",
+    "awardee": "Awardee",
+    "award_date": "AwardDate",
+    "city": "PopCity",
+    "state": "PopState",
+    "zip": "PopZip",
+    "country": "PopCountry"
+  },
+  "method": "2023-2024 primary; 2022 retained only as fallback for supply-lane shortages."
+}

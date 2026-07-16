@@ -1,7 +1,7 @@
 {
-  "sample_method": "Distinct solicitation families selected from the 1,024 closed 2023-2024 Solicitation/Combined notices. Selection is stratified by preferred supply lanes and independent of award availability. Notice versions are collapsed; historical award notices are mapped afterward as answer keys.",
-  "solicitation_universe_rows": 1024,
-  "distinct_solicitation_families": 246,
+  "sample_method": "Distinct solicitation families; product PSC required for preferred supply lanes; 2023-2024 prioritized and 2022 used only for shortages; selection independent of outcomes.",
+  "solicitation_universe_rows": 1301,
+  "distinct_solicitation_families": 304,
   "selected": 100,
   "target_quotas": {
     "Office and facility consumables": 40,
@@ -11,44 +11,44 @@
     "Mixed controls": 5
   },
   "quota_shortage_before_fill": {
-    "Office and facility consumables": 19,
-    "MRO tools and commercial hardware": 26,
+    "Office and facility consumables": 34,
+    "MRO tools and commercial hardware": 18,
     "Packaging, shipping, storage and containers": 13,
-    "Basic IT accessories and standard equipment": 1
+    "Basic IT accessories and standard equipment": 0
+  },
+  "sample_period_use": {
+    "Primary 2023-2024": 94,
+    "2022 fallback": 6
   },
   "gate_counts": {
-    "Passes Gates 1-6 preliminarily; Gate 7 archive review pending": 42,
-    "Gate 4 \u2014 GGG eligibility": 6,
-    "Gate 6 \u2014 product/service exclusion": 43,
-    "Gate 5 \u2014 mandatory source": 9
+    "Passes Gates 1-6 preliminarily; Gate 7 archive review pending": 36,
+    "Gate 4 \u2014 GGG eligibility": 5,
+    "Gate 6 \u2014 product/service exclusion": 48,
+    "Gate 5 \u2014 mandatory source": 11
   },
   "supply_tracks": {
-    "Office and facility consumables": 47,
-    "MRO tools and commercial hardware": 24,
-    "Packaging, shipping, storage and containers": 4,
-    "Basic IT accessories and standard equipment": 9,
-    "Mixed controls": 16
+    "Office and facility consumables": 12,
+    "MRO tools and commercial hardware": 19,
+    "Packaging, shipping, storage and containers": 3,
+    "Basic IT accessories and standard equipment": 10,
+    "Mixed controls": 56
   },
   "top_agencies": [
     [
       "DEPT OF DEFENSE",
-      50
+      61
     ],
     [
       "AGRICULTURE, DEPARTMENT OF",
-      29
+      19
     ],
     [
       "GENERAL SERVICES ADMINISTRATION",
-      10
+      11
     ],
     [
       "VETERANS AFFAIRS, DEPARTMENT OF",
-      5
-    ],
-    [
-      "INTERIOR, DEPARTMENT OF THE",
-      2
+      3
     ],
     [
       "STATE, DEPARTMENT OF",
@@ -59,22 +59,31 @@
       1
     ],
     [
+      "COMMERCE, DEPARTMENT OF",
+      1
+    ],
+    [
+      "INTERIOR, DEPARTMENT OF THE",
+      1
+    ],
+    [
       "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION",
       1
     ]
   ],
   "baseball_calls": {
-    "Home Run": 19,
+    "Home Run": 9,
     "Triple": 12,
-    "Double": 10,
-    "Single": 1,
-    "Strikeout": 58
+    "Double": 13,
+    "Single": 2,
+    "Strikeout": 64
   },
-  "mapped_outcomes": 19,
-  "archive_review_count": 42,
-  "control_or_reject_count": 58,
-  "sampling_pass_1_failure": {
-    "method": "Conditioned on embedded award fields",
-    "result": "98/100 rejected; 88/100 DoD; amendment duplication; rejected as intake sample due to outcome-recovery and agency bias"
-  }
+  "mapped_outcomes": 22,
+  "archive_review_count": 36,
+  "control_or_reject_count": 64,
+  "sampling_corrections": [
+    "Rejected outcome-conditioned pass: 98/100 rejects, 88/100 DoD, amendment duplication.",
+    "Rejected service-PSC false positives: firefighting/equipment-with-personnel and broad CSO records were incorrectly labeled supplies.",
+    "Preferred lanes now require numeric product PSC evidence."
+  ]
 }
