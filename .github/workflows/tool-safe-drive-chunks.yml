@@ -1,0 +1,20 @@
+name: Generate Tool Safe Drive Chunks
+on:
+  push:
+    paths:
+      - '.github/workflows/tool-safe-drive-chunks.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python scripts/build_tool_safe_drive_chunks.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/green_gregory/drive_tool_safe_chunks
+          git commit -m 'Generate connector-safe Drive intake chunks' || exit 0
+          git push
