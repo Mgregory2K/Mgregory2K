@@ -20,8 +20,6 @@ jobs:
         run: python scripts/build_sam_intake_100.py || true
       - name: Build corrected product-PSC lane-balanced intake
         run: python scripts/build_balanced_sam_intake_v2.py
-      - name: Enrich historical notice descriptions and attachment manifests
-        run: python scripts/enrich_sam_archive.py
       - name: Build Drive paste-data parts
         run: python scripts/build_drive_paste_parts.py
       - name: Install workbook dependency
@@ -35,5 +33,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/green_gregory
-          git commit -m 'Apply final sampling corrections to GGG historical intake' || exit 0
+          git commit -m 'Commit final corrected GGG historical intake baseline' || exit 0
           git push
