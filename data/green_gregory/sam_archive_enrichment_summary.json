@@ -1,0 +1,10 @@
+{
+  "total": 100,
+  "search_success": 0,
+  "noticedesc_success": 0,
+  "attachment_manifest_recovered": 0,
+  "description_recovered": 0,
+  "gate7_likely_pass": 0,
+  "gate7_review": 31,
+  "gate7_fail": 69
+}
