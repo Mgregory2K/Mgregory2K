@@ -1,6 +1,6 @@
 {
   "source_url": "https://s3.amazonaws.com/falextracts/Contract%20Opportunities/datagov/ContractOpportunitiesFullCSV.csv",
-  "retrieved_utc": "2026-07-16T17:02:26.285609Z",
+  "retrieved_utc": "2026-07-16T17:05:12.436985Z",
   "counts": {
     "total_rows": 78811,
     "award_index_rows": 7070,
