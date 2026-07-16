@@ -1,6 +1,6 @@
 name: Historical SAM Archive Enrichment
 on:
-  push:
+  pull_request:
     paths:
       - '.github/workflows/archive-enrichment.yml'
   workflow_dispatch:
@@ -19,4 +19,4 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/green_gregory/archive_enrichment data/green_gregory/sam_archive_enriched_100.csv data/green_gregory/sam_archive_enriched_part*.json data/green_gregory/sam_archive_enrichment_summary.json
           git commit -m 'Add GGG historical archive enrichment results' || exit 0
-          git push
+          git push origin HEAD:ggg-archive-enrichment-run
