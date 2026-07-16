@@ -1,0 +1,20 @@
+name: Generate Ultra Safe Ten Row Chunks
+on:
+  push:
+    paths:
+      - '.github/workflows/ultrasafe-10row-chunks.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python scripts/build_ultrasafe_10row_chunks.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/green_gregory/drive_ultrasafe_10row
+          git commit -m 'Generate ten-row ultra-safe Drive chunks' || exit 0
+          git push
