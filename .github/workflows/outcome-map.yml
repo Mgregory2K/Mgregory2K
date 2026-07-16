@@ -1,0 +1,20 @@
+name: Historical Outcome Map
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/outcome-map.yml'
+permissions:
+  contents: read
+jobs:
+  map:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python scripts/map_historical_outcomes.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ggg-historical-outcome-map
+          path: |
+            data/green_gregory/sam_historical_outcome_map_100.csv
+            data/green_gregory/sam_historical_outcome_map_summary.json
+          retention-days: 1
